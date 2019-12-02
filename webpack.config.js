@@ -22,10 +22,21 @@ module.exports = {
             }
         ]
     },
-
+    devServer: {
+      port: 3000,
+      open: true,
+      historyApiFallback: true,
+      proxy: {
+        "**": {
+            target: "http://localhost:3001",
+            changeOrigin: true,
+            secure: false
+        },
+      }
+    },
     plugins: [
         new HtmlWebPackPlugin({
-            template: "./src_frontend/index.html"
-        })
+            template: "./src_frontend/index.html",
+        }),
     ]
 };
