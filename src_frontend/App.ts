@@ -1,6 +1,6 @@
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
-import { Main } from './Main';
+import Springbok from './Springbok';
 
 export class App {
     constructor() {
@@ -8,7 +8,7 @@ export class App {
     }
 
     private render(): void {
-        ReactDOM.render(React.createElement(Main, { app: this }), document.getElementById("app"));
+        ReactDOM.render(React.createElement(Springbok, { app: this }), document.getElementById("react-root"));
     }
 }
 
