@@ -1,12 +1,12 @@
 export const UPDATE_SESSION = 'UPDATE_SESSION';
 
 export interface SystemState {
-    loggedIn: boolean
-    session: string
+    auth: boolean
+    accessToken: string
     userName: string
 }
 
-interface UpdateSessionAction {
+export interface UpdateSessionAction {
     type: typeof UPDATE_SESSION
     payload: SystemState
 }

@@ -1,8 +1,8 @@
 import { SystemState, SystemActionTypes, UPDATE_SESSION } from './sessionTypes'
 
 const initialState: SystemState = {
-    loggedIn: false,
-    session: '',
+    auth: false,
+    accessToken: '',
     userName: ''
 };
 
