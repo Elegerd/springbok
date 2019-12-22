@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-export function signIn (username: string, password: string) {
+export function signIn (data: { username: string, password: string }) {
     return new Promise((resolve, reject) => {
-        axios.post(`api/sign_in`, { username, password })
+        axios.post(`api/sign_in`, data)
             .then(response => {
                 _setAuthData(response);
                 return resolve(response)
@@ -10,9 +10,9 @@ export function signIn (username: string, password: string) {
     })
 }
 
-export function signUp (username: string, password: string, email: string, name: string) {
+export function signUp (data: { email: string, username: string, password: string }) {
     return new Promise((resolve, reject) => {
-        axios.post(`api/sign_up`, { username, password, email, name })
+        axios.post(`api/sign_up`, data)
             .then(response => {
                 return resolve(response)
             }).catch(error => reject(error))
@@ -23,6 +23,12 @@ export function getAccessToken () {
     return localStorage.getItem('accessToken')
 }
 
+export function getRefreshToken () {
+    return localStorage.getItem('accessToken')
+}
+
 function _setAuthData (response: any) {
-    localStorage.setItem('accessToken', response.data.accessToken);
+    axios.defaults.headers['authorization'] = response.data.token.type + ' ' + response.data.token.accessToken;
+    localStorage.setItem('accessToken', response.data.token.accessToken);
+    localStorage.setItem('refreshToken', response.data.token.refreshToken);
 }

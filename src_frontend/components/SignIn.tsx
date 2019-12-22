@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux'
 import { updateSession } from '../actions/sessionActions';
-import { withRouter } from "react-router-dom"
 import { History } from 'history';
 import { SystemState, UpdateSessionAction } from "../reducers/sessionTypes";
 import { signIn } from '../services/auth.service'
@@ -18,13 +17,12 @@ class SignIn extends React.Component<ISignInProps> {
         password: ""
     };
 
-
-    signIn() {
+    onClickSignIn() {
         let data = {
             username: this.state.username,
             password: this.state.password
         };
-        signIn(data.username, data.password)
+        signIn(data)
             .then((res: any) => {
                 console.log(res);
                 this.props.updateSession(res.data);
@@ -38,12 +36,11 @@ class SignIn extends React.Component<ISignInProps> {
             <>
                 <input placeholder={'Username'} onChange={e => this.setState({username: e.target.value})}/>
                 <input placeholder={'Password'} onChange={e => this.setState({password: e.target.value})}/>
-                <button onClick={() => this.signIn()}> Sign In </button>
+                <button onClick={() => this.onClickSignIn()}> Sign In </button>
             </>
         );
     }
 }
-
 
 const mapDispatchToProps = (dispatch: React.Dispatch<UpdateSessionAction>) => {
     return {
@@ -51,4 +48,4 @@ const mapDispatchToProps = (dispatch: React.Dispatch<UpdateSessionAction>) => {
     };
 };
 
-export default withRouter(connect(null, mapDispatchToProps)(SignIn));
+export default connect(null, mapDispatchToProps)(SignIn);

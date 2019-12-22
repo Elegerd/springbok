@@ -5,36 +5,13 @@ import bcrypt from 'bcryptjs';
 
 const config = require('../config');
 const User = require('../modals/user');
-
-exports.userContent = (req: Request, res: Response) => {
-    User.findOne({ _id: req.userId })
-        .select('-_id -__v -password')
-        .populate('roles', '-_id -__v')
-        .exec((err: { kind: string; }, user: any) => {
-            if (err){
-                if(err.kind === 'ObjectId') {
-                    return res.status(404).send({
-                        message: "User not found with _id = " + req.userId
-                    });
-                }
-                return res.status(500).send({
-                    message: "Error retrieving User with _id = " + req.userId
-                });
-            }
-
-            res.status(200).json({
-                "description": "User Content Page",
-                "user": user
-            });
-        });
-};
+const Session = require('../modals/session');
 
 exports.sign_up = (req: Request, res: Response) => {
     // Save User to Database
     console.log("Processing func -> SignUp");
 
     const user = new User({
-        name: req.body.name,
         username: req.body.username,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8)
@@ -50,6 +27,7 @@ exports.sign_up = (req: Request, res: Response) => {
 
 exports.sign_in = (req: Request, res: Response) => {
     console.log("Sign-In");
+    console.log(req.body.username, req.body.password);
 
     User.findOne({ username: req.body.username })
         .exec((err: { kind: string; }, user: { password: any; _id: any; }) => {
@@ -69,10 +47,31 @@ exports.sign_in = (req: Request, res: Response) => {
                 return res.status(401).send({ auth: false, accessToken: null, reason: "Invalid Password!" });
             }
 
-            const token = jwt.sign({ id: user._id }, config.secret, {
-                expiresIn: 86400 // expires in 24 hours
+            let accessExpressIn = 1800;
+            let refreshExpiresIn = 2592000;
+            const type = 'Bearer';
+            const accessToken = jwt.sign({ id: user._id, expiresIn: accessExpressIn }, config.secret, {
+                expiresIn: accessExpressIn
             });
 
-            res.status(200).send({ auth: true, accessToken: token, userName: req.body.username });
+            const session = new Session({
+                user: user,
+                fingerprint: req.body.fingerprint,
+                expiresIn: refreshExpiresIn
+            });
+
+            session.save().then((rp: any) => {
+                console.log("done", rp._id);
+                res.status(200).send({
+                    auth: true,
+                    token: {
+                        type,
+                        accessToken,
+                        refreshToken: rp._id.toString()
+                    },
+                })
+            }).catch((err: Error) => {
+                res.status(500).send("Fail! Error -> " + err);
+            });
         });
 };

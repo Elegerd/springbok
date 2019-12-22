@@ -6,10 +6,9 @@ const config = require('../config');
 
 export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
 
-
     let headers = req.headers;
     console.log(headers);
-    let token = headers.get('x-access-token');
+    let token = headers['authorization'];
 
 
     if (!token) {
@@ -18,14 +17,16 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
         });
     }
 
-    jwt.verify(token, config.secret, (err: Error, decoded: any) => {
+    jwt.verify(token.substring(7), config.secret, (err: Error, decoded: any) => {
         if (err) {
             return res.status(500).send({
                 auth: false,
                 message: 'Fail to Authentication. Error -> ' + err
             });
         }
-        req.userId = decoded.id;
-        next();
+        return res.status(200).send({
+            auth: true,
+            message: 'Successful Authentication'
+        });
     });
 };

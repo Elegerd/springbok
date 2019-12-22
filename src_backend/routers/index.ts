@@ -16,5 +16,5 @@ module.exports = function(app: Express) {
 
     app.post('/sign_in', controller.sign_in);
 
-    app.get('/verifyToken', [authJwt.verifyToken], controller.userContent);
+    app.get('/verifyToken', authJwt.verifyToken);
 };

@@ -10,7 +10,7 @@ export interface SpringbokProps {
 
 const store = configureStore();
 
-class Springbok extends React.Component<SpringbokProps, { endpoint: string, login: string }> {
+class Springbok extends React.Component<SpringbokProps> {
 
     public render(): JSX.Element {
         return (
