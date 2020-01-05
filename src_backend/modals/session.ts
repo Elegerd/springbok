@@ -6,7 +6,7 @@ const SessionSchema = new mongoose.Schema({
         ref: 'User'
     },
     fingerprint: String,
-    expiresIn: Number,
+    expiresIn: { type: Number, required: true },
     created_at: {
         type: Date,
         default: Date.now

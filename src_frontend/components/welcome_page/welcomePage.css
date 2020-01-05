@@ -1,0 +1,79 @@
+.welcome-wrapper {
+  background: white;
+  min-height: 100%;
+}
+
+.welcome-form {
+  display: flex;
+  flex-direction: row;
+  height: 600px;
+  padding: 40px 30px 100px;
+  margin: 0 350px;
+}
+
+.welcome-form-auth, .welcome-form-img {
+  flex-grow: 1;
+  width: 50%;
+}
+
+.welcome-form-auth {
+  display: flex;
+  flex-direction: column;
+  padding: 75px 0 35px;
+}
+
+.rhombus-img {
+  position: relative;
+  float: right;
+  right: 50%;
+}
+
+.rhombus-img-springbok {
+  position: relative;
+  float: left;
+  left: 50%;
+}
+
+.email-input-text, .password-input-text{
+  background: rgba(0, 0, 0, .04);
+  border: none;
+  border-radius: 10px;
+  box-sizing: border-box;
+  color: rgba(0, 0, 0, 1);
+  display: block;
+  font-family: Calibre, Helvetica Neue, Segoe UI, Helvetica, Arial, Lucida Grande, sans-serif;
+  font-size: 19px;
+  height: 36px;
+  margin-bottom: 12px;
+  padding: 8px 16px;
+  width: 320px;
+}
+
+.btn-auth {
+  background: #64748e;
+  border: 1px solid #64748e;
+  border-radius: 24px;
+  color: white;
+  display: block;
+  font-family: Calibre, Helvetica Neue, Segoe UI, Helvetica, Arial, Lucida Grande, sans-serif;
+  font-size: 19px;
+  font-weight: 500;
+  height: 40px;
+  line-height: 19px;
+  margin: 20px 0 12px;
+  padding: 2px 20px 0;
+  cursor: pointer;
+  width: auto;
+}
+
+.link-auth {
+  color: rgba(0, 0, 0, .55);
+  font-family: Calibre, Helvetica Neue, Segoe UI, Helvetica, Arial, Lucida Grande, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  margin: 0 0 27px;
+  max-width: 350px;
+  text-align: left;
+  word-break: keep-all;
+  text-decoration: none;
+}

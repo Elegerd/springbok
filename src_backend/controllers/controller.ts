@@ -27,7 +27,7 @@ exports.sign_up = (req: Request, res: Response) => {
 
 exports.sign_in = (req: Request, res: Response) => {
     console.log("Sign-In");
-    console.log(req.body.username, req.body.password);
+    console.log(req.body);
 
     User.findOne({ username: req.body.username })
         .exec((err: { kind: string; }, user: { password: any; _id: any; }) => {
@@ -56,7 +56,7 @@ exports.sign_in = (req: Request, res: Response) => {
 
             const session = new Session({
                 user: user,
-                fingerprint: req.body.fingerprint,
+                fingerprint: req.body.fingasderprint,
                 expiresIn: refreshExpiresIn
             });
 

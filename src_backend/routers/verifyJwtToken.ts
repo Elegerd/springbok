@@ -10,8 +10,8 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
     console.log(headers);
     let token = headers['authorization'];
 
-
     if (!token) {
+        console.error('No token provided.');
         return res.status(403).send({
             auth: false, message: 'No token provided.'
         });

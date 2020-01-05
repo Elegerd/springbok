@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { History } from 'history';
-import { signUp } from '../services/auth.service'
+import { signUp } from '../services/auth';
 
 interface ISignUpProps {
     history: History

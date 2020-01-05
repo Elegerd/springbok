@@ -19,6 +19,14 @@ module.exports = {
             {
                 test: /\.tsx?$/,
                 loader: "awesome-typescript-loader"
+            },
+            {
+                test: /\.(css|scss)$/,
+                use: [
+                    'style-loader',
+                    'css-loader',
+                    'sass-loader'
+                ],
             }
         ]
     },

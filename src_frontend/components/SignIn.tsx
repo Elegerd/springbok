@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { updateSession } from '../actions/sessionActions';
 import { History } from 'history';
 import { SystemState, UpdateSessionAction } from "../reducers/sessionTypes";
-import { signIn } from '../services/auth.service'
+import { signIn } from '../services/auth';
+import Fingerprint from '../services/fingerprint';
 
 interface ISignInProps {
     updateSession: (newSession: SystemState) => void,
@@ -18,17 +19,19 @@ class SignIn extends React.Component<ISignInProps> {
     };
 
     onClickSignIn() {
-        let data = {
+        let user = {
             username: this.state.username,
             password: this.state.password
         };
-        signIn(data)
-            .then((res: any) => {
-                console.log(res);
-                this.props.updateSession(res.data);
-                this.props.history.push("/content");
-            })
-            .catch(err => console.error(err));
+        Fingerprint().then(fingerprint => {
+            signIn(user, fingerprint)
+                .then((res: any) => {
+                    console.log(res);
+                    this.props.updateSession(res.data);
+                    this.props.history.push("/content");
+                })
+                .catch(err => console.error(err));
+        }).catch(error => console.error(error));
     }
 
     public render(): JSX.Element {

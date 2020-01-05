@@ -8,7 +8,10 @@ export class App {
     }
 
     private render(): void {
-        ReactDOM.render(React.createElement(Springbok, { app: this }), document.getElementById("react-root"));
+        ReactDOM.render(
+            React.createElement(Springbok, { app: this }),
+            document.getElementById("react-root")
+        );
     }
 }
 
