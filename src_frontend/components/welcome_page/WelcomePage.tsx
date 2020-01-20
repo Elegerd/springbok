@@ -2,11 +2,11 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import './welcomePage.css';
 import Fingerprint from "../../services/fingerprint";
-import {signIn} from "../../services/auth";
-import {SystemState, UpdateSessionAction} from "../../reducers/sessionTypes";
-import {updateSession} from "../../actions/sessionActions";
-import {connect} from "react-redux";
-import {History} from "history";
+import { signIn } from "../../services/auth";
+import { SystemState, UpdateSessionAction } from "../../reducers/sessionTypes";
+import { updateSession } from "../../actions/sessionActions";
+import { connect } from "react-redux";
+import { History } from "history";
 
 interface IWelcomePageProps {
     updateSession: (newSession: SystemState) => void,
@@ -28,9 +28,8 @@ class WelcomePage extends React.Component<IWelcomePageProps> {
         Fingerprint().then(fingerprint => {
             signIn(user, fingerprint)
                 .then((res: any) => {
-                    console.log(res);
                     this.props.updateSession(res.data);
-                    this.props.history.push("/content");
+                    this.props.history.push("/");
                 })
                 .catch(err => console.error(err));
         }).catch(error => console.error(error));

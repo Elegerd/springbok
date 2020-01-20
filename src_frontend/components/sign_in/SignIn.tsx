@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { updateSession } from '../actions/sessionActions';
+import { updateSession } from '../../actions/sessionActions';
 import { History } from 'history';
-import { SystemState, UpdateSessionAction } from "../reducers/sessionTypes";
-import { signIn } from '../services/auth';
-import Fingerprint from '../services/fingerprint';
+import { SystemState, UpdateSessionAction } from "../../reducers/sessionTypes";
+import { signIn } from '../../services/auth';
+import Fingerprint from '../../services/fingerprint';
 
 interface ISignInProps {
     updateSession: (newSession: SystemState) => void,
@@ -28,7 +28,7 @@ class SignIn extends React.Component<ISignInProps> {
                 .then((res: any) => {
                     console.log(res);
                     this.props.updateSession(res.data);
-                    this.props.history.push("/content");
+                    this.props.history.push("/");
                 })
                 .catch(err => console.error(err));
         }).catch(error => console.error(error));

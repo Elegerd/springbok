@@ -2,8 +2,7 @@ import { SystemState, SystemActionTypes, UPDATE_SESSION } from './sessionTypes'
 
 const initialState: SystemState = {
     auth: false,
-    accessToken: '',
-    userName: ''
+    user: null
 };
 
 export function systemReducer(
@@ -14,7 +13,8 @@ export function systemReducer(
         case UPDATE_SESSION: {
             return {
                 ...state,
-                ...action.payload
+                auth: action.payload.auth,
+                user: action.payload.user
             }
         }
         default:

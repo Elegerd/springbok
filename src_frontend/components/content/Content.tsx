@@ -1,14 +1,14 @@
 import * as React from 'react';
-import axios from 'axios';
+import request from '../../routes/request';
 
 class Content extends React.Component {
 
     verifyToken() {
-        axios({
+        request({
             method: 'GET',
             url: 'api/verifyToken'
         })
-            .then(res => console.log(res))
+            .then(res => console.log(res.data))
             .catch(err => console.error(err))
     }
 

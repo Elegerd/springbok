@@ -1,9 +1,8 @@
 export const UPDATE_SESSION = 'UPDATE_SESSION';
 
 export interface SystemState {
-    auth: boolean
-    accessToken: string
-    userName: string
+    auth: boolean,
+    user: { username: string, email: string } | null
 }
 
 export interface UpdateSessionAction {

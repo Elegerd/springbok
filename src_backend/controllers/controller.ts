@@ -8,8 +8,7 @@ const User = require('../modals/user');
 const Session = require('../modals/session');
 
 exports.sign_up = (req: Request, res: Response) => {
-    // Save User to Database
-    console.log("Processing func -> SignUp");
+    console.log("Sign Up");
 
     const user = new User({
         username: req.body.username,
@@ -17,7 +16,6 @@ exports.sign_up = (req: Request, res: Response) => {
         password: bcrypt.hashSync(req.body.password, 8)
     });
 
-    // Save a User to the MongoDB
     user.save().then(
         res.send("User registered successfully!")
     ).catch((err: Error) => {
@@ -26,11 +24,11 @@ exports.sign_up = (req: Request, res: Response) => {
 };
 
 exports.sign_in = (req: Request, res: Response) => {
-    console.log("Sign-In");
+    console.log("Sign In");
     console.log(req.body);
 
     User.findOne({ username: req.body.username })
-        .exec((err: { kind: string; }, user: { password: any; _id: any; }) => {
+        .exec((err: { kind: string; }, user: { password: string; _id: any; email: string, username: string }) => {
             if (err){
                 if(err.kind === 'ObjectId') {
                     return res.status(404).send({
@@ -49,8 +47,13 @@ exports.sign_in = (req: Request, res: Response) => {
 
             let accessExpressIn = 1800;
             let refreshExpiresIn = 2592000;
-            const type = 'Bearer';
-            const accessToken = jwt.sign({ id: user._id, expiresIn: accessExpressIn }, config.secret, {
+            const accessToken = jwt.sign({
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                expiresIn: accessExpressIn
+            },
+                config.secret, {
                 expiresIn: accessExpressIn
             });
 
@@ -61,14 +64,17 @@ exports.sign_in = (req: Request, res: Response) => {
             });
 
             session.save().then((rp: any) => {
-                console.log("done", rp._id);
+                console.log("Session saved!", rp._id);
                 res.status(200).send({
                     auth: true,
+                    user: {
+                        username: user.username,
+                        email: user.email
+                    },
                     token: {
-                        type,
                         accessToken,
                         refreshToken: rp._id.toString()
-                    },
+                    }
                 })
             }).catch((err: Error) => {
                 res.status(500).send("Fail! Error -> " + err);

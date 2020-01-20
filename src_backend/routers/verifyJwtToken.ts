@@ -7,7 +7,7 @@ const config = require('../config');
 export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
 
     let headers = req.headers;
-    console.log(headers);
+    console.log("Headers:", headers);
     let token = headers['authorization'];
 
     if (!token) {
@@ -26,6 +26,10 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
         }
         return res.status(200).send({
             auth: true,
+            user: {
+                username: decoded.username,
+                email: decoded.email
+            },
             message: 'Successful Authentication'
         });
     });
