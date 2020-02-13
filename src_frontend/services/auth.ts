@@ -1,24 +1,29 @@
 import request from "../routes/request";
+import Fingerprint from "./fingerprint";
 
-export function signIn(user: { username: string; password: string }, fingerprint: any) {
-    let data = {
-        username: user.username,
-        password: user.password,
-        fingerprint: fingerprint
-    };
+export function signIn(user: { username: string; password: string }) {
     return new Promise((resolve, reject) => {
-        request.post(`api/sign_in`, data)
-            .then(response => {
-                setAuthToken(response.data.token);
-                return resolve(response)
+        Fingerprint()
+            .then(fingerprint => {
+                let data = {
+                    username: user.username,
+                    password: user.password,
+                    fingerprint: fingerprint
+                };
+                request.post(`/api/users/sign_in`, data)
+                    .then(response => {
+                        setAuthToken(response.data.token);
+                        return resolve(response)
+                    })
+                    .catch(error => reject(error))
             })
-            .catch(error => reject(error))
-    })
+            .catch(err => reject(err));
+    });
 }
 
 export function signUp (data: { email: string, username: string, password: string }) {
     return new Promise((resolve, reject) => {
-        request.post(`api/sign_up`, data)
+        request.post(`/api/users/sign_up`, data)
             .then(response => resolve(response))
             .catch(error => reject(error))
     })
@@ -26,9 +31,26 @@ export function signUp (data: { email: string, username: string, password: strin
 
 export function verifyToken() {
     return new Promise((resolve, reject) => {
-        request.get('api/verifyToken')
+        request.get('/api/tokens/verification')
             .then(res => resolve(res))
             .catch(err => reject(err))
+    })
+}
+
+
+export function refreshToken() {
+    return new Promise((resolve, reject) => {
+        Fingerprint()
+            .then(fingerprint => {
+                let data = {
+                    refreshToken: getRefreshToken(),
+                    fingerprint: fingerprint
+                };
+                request.post('/api/tokens/refresh', data)
+                    .then(res => resolve(res))
+                    .catch(err => reject(err))
+            })
+            .catch(err => reject(err));
     })
 }
 
@@ -37,7 +59,7 @@ export function getAccessToken () {
 }
 
 export function getRefreshToken () {
-    return localStorage.getItem('accessToken')
+    return localStorage.getItem('refreshToken')
 }
 
 export function setAuthToken (token: { accessToken: string, refreshToken: string }) {

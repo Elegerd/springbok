@@ -4,7 +4,6 @@ import { updateSession } from '../../actions/sessionActions';
 import { History } from 'history';
 import { SystemState, UpdateSessionAction } from "../../reducers/sessionTypes";
 import { signIn } from '../../services/auth';
-import Fingerprint from '../../services/fingerprint';
 
 interface ISignInProps {
     updateSession: (newSession: SystemState) => void,
@@ -23,15 +22,13 @@ class SignIn extends React.Component<ISignInProps> {
             username: this.state.username,
             password: this.state.password
         };
-        Fingerprint().then(fingerprint => {
-            signIn(user, fingerprint)
-                .then((res: any) => {
-                    console.log(res);
-                    this.props.updateSession(res.data);
-                    this.props.history.push("/");
-                })
-                .catch(err => console.error(err));
-        }).catch(error => console.error(error));
+        signIn(user)
+            .then((res: any) => {
+                console.log(res);
+                this.props.updateSession(res.data);
+                this.props.history.push("/");
+            })
+            .catch(err => console.error(err));
     }
 
     public render(): JSX.Element {

@@ -2,7 +2,7 @@ import React from 'react';
 import { History } from 'history';
 import { ConnectedRouter } from 'connected-react-router';
 import {connect} from "react-redux";
-import {verifyToken} from "../../services/auth";
+import { verifyToken, refreshToken } from "../../services/auth";
 import {SystemState, UpdateSessionAction} from "../../reducers/sessionTypes";
 import {updateSession} from "../../actions/sessionActions";
 import {ApplicationState} from "../../reducers";
@@ -28,11 +28,17 @@ class Main extends React.Component<IMainProps> {
             .then((res: any) => {
                 console.log(res.data);
                 this.props.updateSession({ auth: res.data.auth, user: res.data.user});
-                this.setState({is_loading: false})
+                this.setState({ is_loading: false })
             })
             .catch(err => {
                 console.error(err);
-                this.setState({is_loading: false})
+                refreshToken()
+                    .then(res => console.log(res))
+                    .catch(err => {
+                        console.error(err);
+                        this.props.updateSession({ auth: false, user: null});
+                        this.setState({ is_loading: false })
+                    });
             })
     }
 

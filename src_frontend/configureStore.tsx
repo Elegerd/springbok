@@ -25,7 +25,7 @@ export default function configureStore(preloadedState?: any) {
             // Save the serialised state to localStorage against the key 'app_state'
             window.localStorage.setItem('app_state', serialisedState);
         } catch (err) {
-            // Log errors here, or ignore
+            console.error("Save state:", err)
         }
     };
 

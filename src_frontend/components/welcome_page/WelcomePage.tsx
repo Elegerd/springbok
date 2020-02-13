@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import './welcomePage.css';
-import Fingerprint from "../../services/fingerprint";
 import { signIn } from "../../services/auth";
 import { SystemState, UpdateSessionAction } from "../../reducers/sessionTypes";
 import { updateSession } from "../../actions/sessionActions";
@@ -25,14 +24,12 @@ class WelcomePage extends React.Component<IWelcomePageProps> {
             username: this.state.username,
             password: this.state.password
         };
-        Fingerprint().then(fingerprint => {
-            signIn(user, fingerprint)
-                .then((res: any) => {
-                    this.props.updateSession(res.data);
-                    this.props.history.push("/");
-                })
-                .catch(err => console.error(err));
-        }).catch(error => console.error(error));
+        signIn(user)
+            .then((res: any) => {
+                this.props.updateSession(res.data);
+                this.props.history.push("/");
+            })
+            .catch(err => console.error(err));
     }
 
     public render(): JSX.Element {
@@ -52,7 +49,7 @@ class WelcomePage extends React.Component<IWelcomePageProps> {
                     </div>
                     <div className={'welcome-form-img'}>
                         <div className={'rhombus-img'}>
-                            <img className={'rhombus-img-springbok'} src="/public/de628Z2.png"  alt={'springbok'}/>
+                            <img className={'rhombus-img-springbok'} src="/public/springbok.png"  alt={'springbok'}/>
                         </div>
                     </div>
                 </div>

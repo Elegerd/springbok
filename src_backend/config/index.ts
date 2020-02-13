@@ -1,4 +1,6 @@
 module.exports = {
-    'secret': 'springbok-super-secret-key',
-    url: 'mongodb://localhost:27017/springbok',
+    secret: 'springbok-super-secret-key',
+    mongodbUrl: 'mongodb://localhost:27017/springbok',
+    backendUrl: 'http://localhost:3001',
+    frontendUrl: 'http://localhost:3000'
 };
