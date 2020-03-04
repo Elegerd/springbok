@@ -29,6 +29,21 @@ export function signUp (data: { email: string, username: string, password: strin
     })
 }
 
+export function logOut () {
+    return new Promise((resolve, reject) => {
+        let data = {
+            refreshToken: getRefreshToken(),
+        };
+        request.post(`/api/tokens/logout`, data)
+            .then(response => {
+                localStorage.removeItem('accessToken');
+                localStorage.removeItem('refreshToken');
+                resolve(response)
+            })
+            .catch(error => reject(error))
+    })
+}
+
 export function verifyToken() {
     return new Promise((resolve, reject) => {
         request.get('/api/tokens/verification')
@@ -47,7 +62,10 @@ export function refreshToken() {
                     fingerprint: fingerprint
                 };
                 request.post('/api/tokens/refresh', data)
-                    .then(res => resolve(res))
+                    .then(response => {
+                        setAuthToken(response.data.token);
+                        resolve(response)}
+                        )
                     .catch(err => reject(err))
             })
             .catch(err => reject(err));

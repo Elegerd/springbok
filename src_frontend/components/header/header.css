@@ -1,5 +1,6 @@
 header {
     height: 50px;
+    flex: 0 0 auto;
     background: white;
     border-bottom-width: 1px;
     border-bottom-style: solid;

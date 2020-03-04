@@ -7,8 +7,8 @@ import {SystemState, UpdateSessionAction} from "../../reducers/sessionTypes";
 import {updateSession} from "../../actions/sessionActions";
 import {ApplicationState} from "../../reducers";
 import Header from '../header/Header';
-import Footer from '../footer/Footer';
 import routes from '../../routes';
+import { Spin } from 'antd';
 import './main.css';
 
 interface IMainProps {
@@ -26,36 +26,37 @@ class Main extends React.Component<IMainProps> {
     componentDidMount(): void {
         verifyToken()
             .then((res: any) => {
-                console.log(res.data);
                 this.props.updateSession({ auth: res.data.auth, user: res.data.user});
                 this.setState({ is_loading: false })
             })
             .catch(err => {
                 console.error(err);
                 refreshToken()
-                    .then(res => console.log(res))
+                    .then((res: any) => {
+                        this.props.updateSession({ auth: res.data.auth, user: res.data.user});
+                        this.setState({ is_loading: false })
+                    })
                     .catch(err => {
                         console.error(err);
                         this.props.updateSession({ auth: false, user: null});
-                        this.setState({ is_loading: false })
+                        this.setState({ is_loading: false }, () => {
+                            this.props.history.push("/");
+                        })
                     });
             })
     }
 
     public render(): JSX.Element {
-        return (
+        return this.state.is_loading ?
+            <Spin style={{margin: 'auto'}} size={"large"}/> :
             <>
                 <Header />
                 <main>
-                    {this.state.is_loading ? null : (
-                        <ConnectedRouter history={this.props.history}>
-                            {routes(this.props.session.auth)}
-                        </ConnectedRouter>
-                    )}
+                    <ConnectedRouter history={this.props.history}>
+                        {routes(this.props.session.auth)}
+                    </ConnectedRouter>
                 </main>
-                <Footer />
             </>
-        )
     }
 }
 

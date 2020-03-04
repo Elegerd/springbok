@@ -1,5 +1,58 @@
+@import '~antd/dist/antd.css';
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
 main {
+    flex: 1;
+    background: white;
+    height: 100%;
+    overflow: auto;
+}
+
+#react-root {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    background: #fafafa;
+    line-height: 1.34;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 14px;
+}
+
+.auth-wrapper {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    padding: 40px 30px 100px;
+    margin: 0 300px;
+}
+
+.auth-form-wrapper {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 100%;
+    height: 600px;
+    padding: 40px 30px 100px;
+}
+
+.auth-form {
+    display: flex;
     flex-grow: 1;
-    flex-shrink: 0;
-    flex-basis: auto;
+    min-width: 300px;
+    margin: auto;
+    flex-direction: column;
+    padding: 35px 0 35px;
+}
+
+.auth-form > span, .auth-form > .ant-input {
+    margin: 5px 0;
+}
+
+.spinner-wrapper {
+
 }

@@ -6,6 +6,7 @@ import { SystemState, UpdateSessionAction } from "../../reducers/sessionTypes";
 import { updateSession } from "../../actions/sessionActions";
 import { connect } from "react-redux";
 import { History } from "history";
+import { Button, Input } from "antd";
 
 interface IWelcomePageProps {
     updateSession: (newSession: SystemState) => void,
@@ -33,24 +34,23 @@ class WelcomePage extends React.Component<IWelcomePageProps> {
     }
 
     public render(): JSX.Element {
+        const { username, password } = this.state;
+
         return (
-            <div className={'welcome-wrapper'}>
-                <div className={'welcome-form'}>
-                    <div className={'welcome-form-auth'}>
-                        <h1>Будьте на связи везде и всегда!</h1>
-                        <div className={'form-auth'}>
-                            <input className={'email-input-text'} placeholder={'Электронный адрес или логин'}
-                                   onChange={e => this.setState({username: e.target.value})}/>
-                            <input className={'password-input-text'} placeholder={'Пароль'}
-                                   onChange={e => this.setState({password: e.target.value})}/>
-                            <button className={'btn-auth'} onClick={() => this.onClickSignIn()}>Вход</button>
-                            <Link className={'link-auth'} to="/sign_up"> или присоединетесь сейчас!</Link>
-                        </div>
-                    </div>
-                    <div className={'welcome-form-img'}>
-                        <div className={'rhombus-img'}>
-                            <img className={'rhombus-img-springbok'} src="/public/springbok.png"  alt={'springbok'}/>
-                        </div>
+            <div className={'auth-wrapper'}>
+                <div className={'auth-form-wrapper'}>
+                    <h1>Будьте на связи везде и всегда!</h1>
+                    <div className={'auth-form'}>
+                        <Input
+                            value={username}
+                            onChange={e => this.setState({username: e.target.value})}
+                            placeholder="Login" />
+                        <Input.Password
+                            value={password}
+                            onChange={e => this.setState({password: e.target.value})}
+                            placeholder="Password" />
+                        <Button type="primary" onClick={() => this.onClickSignIn()}>Вход</Button>
+                        <Link className={'link-auth'} to="/sign_up"> или присоединетесь сейчас!</Link>
                     </div>
                 </div>
             </div>

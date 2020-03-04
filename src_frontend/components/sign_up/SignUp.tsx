@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { History } from 'history';
 import { signUp } from '../../services/auth';
+import {Button, Input} from "antd";
 
 interface ISignUpProps {
     history: History
@@ -29,13 +30,29 @@ class SignUp extends React.Component<ISignUpProps> {
     }
 
     public render(): JSX.Element {
+        const { username, password, email } = this.state;
+
         return (
-            <>
-                <input placeholder={'Username'} onChange={e => this.setState({username: e.target.value})}/>
-                <input placeholder={'Email'} onChange={e => this.setState({email: e.target.value})}/>
-                <input placeholder={'Password'} onChange={e => this.setState({password: e.target.value})}/>
-                <button onClick={() => this.onClickSignUp()}> Sign Up </button>
-            </>
+            <div className={'auth-wrapper'}>
+                <div className={'auth-form-wrapper'}>
+                    <h1>Создание аккаунта</h1>
+                    <div className={'auth-form'}>
+                        <Input
+                            value={email}
+                            onChange={e => this.setState({email: e.target.value})}
+                            placeholder="Email" />
+                        <Input
+                            value={username}
+                            onChange={e => this.setState({username: e.target.value})}
+                            placeholder="Login" />
+                        <Input.Password
+                            value={password}
+                            onChange={e => this.setState({password: e.target.value})}
+                            placeholder="Password" />
+                        <Button type="primary" onClick={() => this.onClickSignUp()}>Зарегистрироваться</Button>
+                    </div>
+                </div>
+            </div>
         );
     }
 }
